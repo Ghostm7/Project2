@@ -1,6 +1,6 @@
 const JWT = require("jsonwebtoken");
 const createError = require("http-errors");
-const User = require("../model/regModel");
+const User = require("../Model/regModel");
 
 module.exports = {
     signAccessToken:(UserId) => {
@@ -41,7 +41,7 @@ module.exports = {
     signRefreshToken:(UserId) => {
         return new Promise((resolve, reject) => {
             const payload = {}
-            const sectret = process.env.REFRESH_TOKEN_SECRET;
+            const secret = process.env.REFRESH_TOKEN_SECRET;
             const options = {
                 expiresIn: '1y',
                 issuer: "EddTechnologies.com",
