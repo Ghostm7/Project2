@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 
 module.exports = (sequelize, DataTypes) => {
-    const Reg = sequelize.define('registration', {
+    const Reg = sequelize.define('registrations', {
         reg_id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -19,10 +19,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-    }, {
-        hooks: {
+    }); 
             // Hook before creating an instance of the model
-            beforeCreate: async (reg) => {
+            Reg.beforeCreate(async (reg) => {
                 try {
                     const salt = await bcrypt.genSalt(12);
                     const hashedPwd = await bcrypt.hash(reg.regPassword, salt);
@@ -30,9 +29,8 @@ module.exports = (sequelize, DataTypes) => {
                 } catch (error) {
                     throw new Error("Error encrypting password");
                 }
-            }
-        }
-    });
+            })
+
     
     // Function to compare the entered password with the saved hashed password
     Reg.prototype.isValidPassword = async function(password) {
